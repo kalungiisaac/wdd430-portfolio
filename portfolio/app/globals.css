@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-sans: "Trebuchet MS", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #f4f2eb;
+  color: #16231f;
+  font-family: var(--font-sans);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #d6ef8b;
+  outline-offset: 4px;
+}
