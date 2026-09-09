@@ -4,7 +4,7 @@
 
 :root {
   --font-display: Georgia, "Times New Roman", serif;
-  --font-sans: "Trebuchet MS", Arial, sans-serif;
+  --font-sans: Arial, "Trebuchet MS", sans-serif;
 }
 
 * {
@@ -17,13 +17,13 @@ html {
 
 body {
   margin: 0;
-  background: #f4f2eb;
-  color: #16231f;
+  background: #fdfaf4;
+  color: #1f1f1c;
   font-family: var(--font-sans);
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 3px solid #d6ef8b;
+  outline: 3px solid #c9b68a;
   outline-offset: 4px;
 }

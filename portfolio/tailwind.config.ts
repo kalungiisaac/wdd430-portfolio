@@ -8,14 +8,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#16231f",
-        moss: "#315c4b",
-        lime: "#d6ef8b",
-        paper: "#f4f2eb",
+        ink: "#1f1f1c",
+        moss: "#7b8065",
+        lime: "#c9b68a",
+        paper: "#fdfaf4",
       },
       fontFamily: {
-        display: ["var(--font-display)"],
-        sans: ["var(--font-sans)"],
+        display: ["Georgia", "serif"],
+        sans: ["Arial", "sans-serif"],
       },
     },
   },

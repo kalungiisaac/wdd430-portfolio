@@ -31,7 +31,7 @@ export default function AboutPage() {
               <li>English</li>
               <li>Luganda</li>
               <li>Swahili</li>
-              <li>Chinese</li>
+              <li>Basic Chinese</li>
             </ul>
           </div>
 
@@ -44,6 +44,32 @@ export default function AboutPage() {
               <li>Git, GitHub, project planning</li>
               <li>Accessibility and user-centered design</li>
             </ul>
+          </div>
+        </section>
+
+        <section className="mt-14 rounded-none border border-moss/30 bg-paper p-8">
+          <h2 className="font-display text-3xl font-bold text-ink">Reflection Questions</h2>
+
+          <div className="mt-7 space-y-8">
+            <article>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-moss">Question 1</p>
+              <p className="mt-2 text-lg font-semibold leading-8 text-ink">
+                What is the purpose of the <span className="font-display">layout.tsx</span> file?
+              </p>
+              <p className="mt-3 leading-7 text-ink/70">
+                The layout file sets up the global HTML structure for the portfolio and wraps every page with shared elements like the header, page contents, and footer. It also loads the global styles and metadata so the whole site stays consistent.
+              </p>
+            </article>
+
+            <article>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-moss">Question 2</p>
+              <p className="mt-2 text-lg font-semibold leading-8 text-ink">
+                Why are Server Components used by default in the App Router?
+              </p>
+              <p className="mt-3 leading-7 text-ink/70">
+                Server Components are the default in the App Router because they render on the server and keep the client bundle smaller. They also help with data fetching, security, and better performance for portfolio pages.
+              </p>
+            </article>
           </div>
         </section>
       </section>

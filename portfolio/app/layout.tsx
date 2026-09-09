@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Kalungi Isaac | Portfolio",
-  description: "A small collection of thoughtful web projects.",
+  description: "Portfolio of web development work and learning projects.",
 };
 
 export default function RootLayout({
