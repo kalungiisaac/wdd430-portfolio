@@ -1,10 +1,10 @@
-import ProjectCard from "../components/ProjectCard";
+import ProjectList from "@/components/ProjectList";
 
 const projects = [
   {
     title: "Study Space",
     description: "A calm dashboard for turning scattered coursework into a clear weekly rhythm.",
-    technologies: ["Next.js", "TypeScript", "Tailwind"],
+    technologies: ["Next.js", "TypeScript", "Tailwind", "Html", "CSS"],
     link: "https://github.com/",
   },
   {
@@ -21,11 +21,20 @@ export default function HomePage() {
         <div>
           <p className="mb-5 text-sm font-bold uppercase tracking-[0.24em] text-moss">Web developer - Student</p>
           <h1 className="max-w-3xl font-display text-6xl font-bold leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
-            Making the web feel <span className="text-moss">thoughtful.</span>
+            Building <span className="text-moss">clean digital experiences</span> with purpose.
           </h1>
         </div>
-        <div className="max-w-sm border-l-2 border-lime pl-6 text-lg leading-8 text-ink/70">
-          <p>I&apos;m Kalungi Isaac, a developer learning in public and building digital spaces with purpose.</p>
+
+        <div className="flex flex-col gap-6">
+          <div className="border-l-2 border-lime pl-6 text-lg leading-8 text-ink/70">
+            <img
+              src="/images/profile.jpg"
+              alt="Kalungi Isaac"
+              className="mb-6 h-100 w-full object-cover object-center shadow-[8px_3px_0_#000]"
+            />
+            <p>I&apos;m Kalungi Isaac, a web developer and student focused on accessible design, strong front-end foundations, and practical digital products.</p>
+            <p className="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-moss">React • Next.js • TypeScript • UI Design</p>
+          </div>
         </div>
       </section>
 
@@ -38,11 +47,7 @@ export default function HomePage() {
             </div>
             <p className="max-w-xs text-sm leading-6 text-paper/70">Small experiments, useful tools, and thoughtful details.</p>
           </div>
-          <div className="grid gap-8 md:grid-cols-2">
-            {projects.map((project) => (
-              <ProjectCard key={project.title} {...project} />
-            ))}
-          </div>
+          <ProjectList projects={projects} />
         </div>
       </section>
     </main>
