@@ -5,7 +5,7 @@ const projects = [
     title: "Study Space",
     description: "A calm dashboard for turning scattered coursework into a clear weekly rhythm.",
     technologies: ["Next.js", "TypeScript", "Tailwind", "Html", "CSS"],
-    link: "https://github.com/",
+    link: "https://github.com/kalungiisaac/wdd430-portfolio/tree/main/portfolio",
   },
   {
     title: "Field Notes",
@@ -19,7 +19,7 @@ export default function HomePage() {
     <main>
       <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-24 pt-20 md:grid-cols-[1.2fr_0.8fr] md:items-end md:pt-32">
         <div>
-          <p className="mb-5 text-sm font-bold uppercase tracking-[0.24em] text-moss">Web developer - Student</p>
+          <p className="mb-5 text-sm font-bold uppercase tracking-[0.24em] text-moss">Versatile Web developer</p>
           <h1 className="max-w-3xl font-display text-6xl font-bold leading-[0.95] tracking-tight text-ink sm:text-7xl md:text-8xl">
             Building <span className="text-moss">clean digital experiences</span> with purpose.
           </h1>
@@ -33,7 +33,7 @@ export default function HomePage() {
               className="mb-6 h-100 w-full object-cover object-center shadow-[8px_3px_0_#000]"
             />
             <p>I&apos;m Kalungi Isaac, a web developer and student focused on accessible design, strong front-end foundations, and practical digital products.</p>
-            <p className="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-moss">React • Next.js • TypeScript • UI Design</p>
+            <p className="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-moss">React • Next.js • TypeScript</p>
           </div>
         </div>
       </section>
