@@ -5,7 +5,7 @@ const projects = [
     title: "Study Space",
     description: "A personal study dashboard for organizing coursework and keeping weekly learning goals visible.",
     technologies: ["Next.js", "TypeScript", "Tailwind", "HTML", "CSS"],
-    link: "https://github.com/kalungiisaac/wdd430-portfolio/tree/main/portfolio",
+    link: "https://github.com/kalungiisaac/Kali_Game_Store_one",
   },
   {
     title: "Field Notes",
