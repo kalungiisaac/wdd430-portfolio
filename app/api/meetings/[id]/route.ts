@@ -11,7 +11,7 @@ export async function GET(
     return Response.json({ error: 'Meeting id must be a positive integer' }, { status: 400 });
   }
 
-  const meeting = getMeetingById(idNum);
+  const meeting = await getMeetingById(idNum);
 
   if (!meeting) {
     return Response.json({ error: 'Meeting not found' }, { status: 404 });
