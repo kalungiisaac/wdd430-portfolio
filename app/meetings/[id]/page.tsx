@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import MeetingDetail from '@/components/MeetingDetail';
-import { fetchMeetingById } from '@/lib/api';
+import { getMeetingById } from '@/lib/meetings-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +21,7 @@ export default async function MeetingDetailPage({
     notFound();
   }
 
-  const meeting = await fetchMeetingById(idNum);
+  const meeting = await getMeetingById(idNum);
 
   if (!meeting) {
     notFound();

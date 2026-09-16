@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import MeetingCard from '@/components/MeetingCard';
-import { fetchMeetings } from '@/lib/api';
+import { getMeetings } from '@/lib/meetings-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MeetingsPage() {
-  const meetings = await fetchMeetings();
+  const meetings = await getMeetings();
 
   if (meetings.length === 0) {
     return <p className="text-foreground/70">No meetings available.</p>;
