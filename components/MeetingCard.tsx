@@ -4,7 +4,8 @@ import { formatMeetingDate, meetingTypeLabel } from '@/lib/format';
 
 export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) {
   return (
-    <li>
+      
+   <li>
       <Link
         href={`/meetings/${meeting.id}`}
         className="block rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5"
@@ -33,6 +34,6 @@ export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) 
           Opening hymn #{meeting.openingHymn.number}
         </p>
       </Link>
-    </li>
+  </li>
   );
 }
