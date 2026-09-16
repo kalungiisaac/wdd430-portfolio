@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import MeetingCard from '@/components/MeetingCard';
 import { fetchMeetings } from '@/lib/api';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'All Meetings',
 };

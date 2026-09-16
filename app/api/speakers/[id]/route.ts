@@ -1,5 +1,7 @@
 import { getSpeakerById } from '@/lib/speakers-db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
