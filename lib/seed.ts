@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { MongoClient } from 'mongodb';
-import type { SacramentMeeting } from './types';
+import type { SacramentMeeting, Speaker } from './types';
 
 const uri = process.env.mongodb_URL;
 if (!uri) {
@@ -134,26 +134,113 @@ const meetings: SacramentMeeting[] = [
   },
 ];
 
+const speakers: Speaker[] = [
+  {
+    id: 1,
+    name: 'Sister Rachel Bennett',
+    title: 'Sister',
+    calling: 'Young Women President',
+    bio: 'Rachel Bennett has served in the Young Women organization for over five years. She is passionate about helping youth develop lasting testimonies of Jesus Christ through daily scripture study and prayer. She and her husband, Aaron, have four children and live in the Riverside area.',
+  },
+  {
+    id: 2,
+    name: 'Brother Thomas Peterson',
+    title: 'Brother',
+    calling: 'High Priest',
+    bio: 'Thomas Peterson is a lifelong member of the Church and has served in various callings including ward mission leader and elders quorum president. He loves teaching the gospel and has a deep appreciation for the Atonement of Jesus Christ. He retired from teaching high school history in 2024.',
+  },
+  {
+    id: 3,
+    name: 'Stake President Ronald Young',
+    title: 'President',
+    calling: 'Riverside Stake President',
+    bio: 'Ronald Young has served as stake president since 2022. He works as a family physician in the community and is dedicated to ministering to members throughout the stake. He and his wife, Linda, are the parents of six children and grandparents of twelve.',
+  },
+  {
+    id: 4,
+    name: 'Sister Karen White',
+    title: 'Sister',
+    calling: 'Relief Society Counselor',
+    bio: 'Karen White serves as a counselor in the Riverside Ward Relief Society presidency. She has a talent for organizing community service projects and loves extending Christlike love to those around her. She works as a nurse at the local hospital.',
+  },
+  {
+    id: 5,
+    name: 'Sister Sandra Miller',
+    title: 'Sister',
+    calling: 'Temple Ordinance Worker',
+    bio: 'Sandra Miller has been a temple ordinance worker for over three years. She finds great joy in serving in the temple and loves sharing her testimony of the blessings of temple worship. She is also an accomplished pianist and frequently plays for ward meetings.',
+  },
+  {
+    id: 6,
+    name: 'Brother Daniel Clark',
+    title: 'Brother',
+    calling: 'Sunday School Teacher',
+    bio: 'Daniel Clark teaches the adult Sunday School class and is known for his engaging and insightful lessons. He has a deep love for the scriptures and enjoys helping class members apply gospel principles in their daily lives. He works as a software engineer.',
+  },
+  {
+    id: 7,
+    name: 'Sister Katherine Frost',
+    title: 'Sister',
+    calling: 'Primary President',
+    bio: 'Katherine Frost serves as the Riverside Ward Primary president. She is dedicated to teaching children about Jesus Christ with love and patience. She and her husband, Brian, have three children who are all active in the ward. She enjoys gardening and reading.',
+  },
+  {
+    id: 8,
+    name: 'Brother Michael Adams',
+    title: 'Brother',
+    calling: 'Elders Quorum President',
+    bio: 'Michael Adams serves as the elders quorum president and is committed to ministering to every brother in the ward. He finds joy in service and loves sharing his testimony through daily gospel study. He is a local business owner and community volunteer.',
+  },
+  {
+    id: 9,
+    name: 'Bishop Mark Hansen',
+    title: 'Bishop',
+    calling: 'Riverside Ward Bishop',
+    bio: 'Bishop Mark Hansen has served as the bishop of the Riverside Ward since 2021. He is a dedicated servant leader who loves the members of his ward. He works as an accountant and is active in community organizations. He and his wife, Susan, have five children.',
+  },
+  {
+    id: 10,
+    name: 'Brother David Carter',
+    title: 'Brother',
+    calling: 'Ward Executive Secretary',
+    bio: 'David Carter serves as the ward executive secretary and assists the bishopric with scheduling and administrative tasks. He is organized, reliable, and always willing to serve. He works as a financial analyst and enjoys outdoor activities with his family.',
+  },
+];
+
 async function seed() {
   const client = new MongoClient(uri!);
   try {
     await client.connect();
     const db = client.db('sacrament-meetings');
-    const col = db.collection('meetings');
 
-    const existing = await col.countDocuments();
-    if (existing > 0) {
-      console.log(`Database already has ${existing} meetings. Dropping and re-seeding...`);
-      await col.drop();
+    // Seed meetings
+    const meetingsCol = db.collection('meetings');
+    const existingMeetings = await meetingsCol.countDocuments();
+    if (existingMeetings > 0) {
+      console.log(`Dropping ${existingMeetings} existing meetings...`);
+      await meetingsCol.drop();
+    }
+    const meetingResult = await meetingsCol.insertMany(meetings);
+    console.log(`Seeded ${meetingResult.insertedCount} meetings`);
+
+    // Seed speakers
+    const speakersCol = db.collection('speakers');
+    const existingSpeakers = await speakersCol.countDocuments();
+    if (existingSpeakers > 0) {
+      console.log(`Dropping ${existingSpeakers} existing speakers...`);
+      await speakersCol.drop();
+    }
+    const speakerResult = await speakersCol.insertMany(speakers);
+    console.log(`Seeded ${speakerResult.insertedCount} speakers`);
+
+    console.log('\nMeetings:');
+    for (const doc of await meetingsCol.find().sort({ date: 1 }).toArray()) {
+      console.log(`  [${doc.id}] ${doc.date} - ${doc.meetingType} - ${doc.presiding}`);
     }
 
-    const result = await col.insertMany(meetings);
-    console.log(`Seeded ${result.insertedCount} meetings into sacrament-meetings.meetings`);
-
-    const docs = await col.find().sort({ date: 1 }).toArray();
-    console.log('\nMeetings in database:');
-    for (const doc of docs) {
-      console.log(`  [${doc.id}] ${doc.date} - ${doc.meetingType} - ${doc.presiding}`);
+    console.log('\nSpeakers:');
+    for (const doc of await speakersCol.find().sort({ name: 1 }).toArray()) {
+      console.log(`  [${doc.id}] ${doc.name} - ${doc.calling}`);
     }
   } finally {
     await client.close();

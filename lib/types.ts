@@ -19,6 +19,14 @@ export interface WardBusinessItem {
   description: string;
 }
 
+export interface Speaker {
+  id: number;
+  name: string;
+  title: string;
+  calling: string;
+  bio: string;
+}
+
 export interface SacramentMeeting {
   id: number;
   date: string; // ISO date string: 'YYYY-MM-DD'

@@ -7,6 +7,7 @@ const links = [
   { href: '/', label: 'Home' },
   { href: '/meetings', label: 'Meetings' },
   { href: '/meetings/current', label: 'Current' },
+  { href: '/speakers', label: 'Speakers' },
 ];
 
 export default function NavLinks() {
@@ -15,7 +16,8 @@ export default function NavLinks() {
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
     if (href === '/meetings/current') return pathname === '/meetings/current';
-    return pathname === '/meetings' && !/^\/meetings\/\d+$/.test(pathname);
+    if (href === '/speakers') return pathname.startsWith('/speakers');
+    return pathname === '/meetings' || pathname.startsWith('/meetings/');
   };
 
   return (
