@@ -16,7 +16,16 @@ function toSpeaker(doc: Record<string, unknown>): Speaker {
 export async function getSpeakers(): Promise<Speaker[]> {
   const db = await getDb();
   const docs = await db.collection(COLLECTION).find().sort({ name: 1 }).toArray();
-  return docs.map(toSpeaker);
+  const speakersById = new Map<number, Speaker>();
+
+  for (const doc of docs) {
+    const speaker = toSpeaker(doc);
+    if (!speakersById.has(speaker.id)) {
+      speakersById.set(speaker.id, speaker);
+    }
+  }
+
+  return [...speakersById.values()];
 }
 
 export async function getSpeakerById(id: number): Promise<Speaker | null> {
