@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { MongoClient } from 'mongodb';
 import type { SacramentMeeting, Speaker } from './types';
 
-const uri = process.env.mongodb_URL;
+const uri = process.env.MONGODB_URL ?? process.env.mongodb_URL;
 if (!uri) {
   console.error('MONGODB_URL is not defined in .env');
   process.exit(1);

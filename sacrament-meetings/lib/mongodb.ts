@@ -6,9 +6,9 @@ let clientPromise: Promise<MongoClient>;
 function getClientPromise(): Promise<MongoClient> {
   if (clientPromise) return clientPromise;
 
-  const uri = process.env.mongodb_URL;
+  const uri = process.env.MONGODB_URL ?? process.env.mongodb_URL;
   if (!uri) {
-    console.error('MONGODB_URL env var is:', process.env.mongodb_URL);
+    console.error('MONGODB_URL env var is:', process.env.MONGODB_URL);
     throw new Error('MONGODB_URL is not defined in environment variables');
   }
 
