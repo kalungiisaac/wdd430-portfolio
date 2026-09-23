@@ -10,7 +10,7 @@ export default async function CurrentMeetingPage() {
   sunday.setDate(today.getDate() - today.getDay());
 
   const iso = toIsoDate(sunday);
-  const matches = await getMeetings(iso);
+  const matches = await getMeetings('', 1, iso);
 
   if (matches.length > 0) {
     redirect(`/meetings/${matches[0].id}`);
