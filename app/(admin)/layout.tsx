@@ -22,6 +22,12 @@ export default function AdminLayout({
         >
           Back to meetings
         </Link>
+        <Link
+          href="/meetings/new"
+          className="rounded-full px-3 py-1 font-medium text-foreground/70 transition-colors hover:bg-foreground/5"
+        >
+          New meeting
+        </Link>
       </nav>
       {children}
     </div>

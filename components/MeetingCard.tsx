@@ -1,15 +1,12 @@
 import Link from 'next/link';
 import type { SacramentMeeting } from '@/lib/types';
 import { formatMeetingDate, meetingTypeLabel } from '@/lib/format';
+import DeleteMeetingButton from './DeleteMeetingButton';
 
 export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) {
   return (
-      
-   <li>
-      <Link
-        href={`/meetings/${meeting.id}`}
-        className="block rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5"
-      >
+    <li className="flex flex-col rounded-xl border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5">
+      <Link href={`/meetings/${meeting.id}`} className="block p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-serif text-lg font-semibold text-foreground">
             {formatMeetingDate(meeting.date)}
@@ -34,6 +31,15 @@ export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) 
           Opening hymn #{meeting.openingHymn.number}
         </p>
       </Link>
-  </li>
+      <div className="mt-auto flex items-center justify-end gap-2 border-t border-border px-5 py-3">
+        <Link
+          href={`/meetings/${meeting.id}/edit`}
+          className="rounded-full px-3 py-1 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+          Edit
+        </Link>
+        <DeleteMeetingButton meetingId={meeting.id} />
+      </div>
+    </li>
   );
 }
