@@ -121,6 +121,35 @@ export async function getMeetingById(
   return (rows.rows[0] as unknown as SacramentMeeting) ?? null;
 }
 
+/**
+ * Returns the meeting for the given date if one exists, otherwise the meeting
+ * closest to that date (preferring a future meeting when equally far away).
+ * Returns null only when the meetings table is empty.
+ */
+export async function getCurrentMeeting(
+  targetDate: string
+): Promise<SacramentMeeting | null> {
+  const rows = await sql`
+    SELECT
+      id,
+      to_char(date, 'YYYY-MM-DD') AS "date",
+      meeting_type                AS "meetingType",
+      presiding, conducting, announcements,
+      opening_hymn                AS "openingHymn",
+      opening_prayer              AS "openingPrayer",
+      ward_business               AS "wardBusiness",
+      stake_business              AS "stakeBusiness",
+      sacrament_hymn              AS "sacramentHymn",
+      speakers,
+      closing_hymn                AS "closingHymn",
+      closing_prayer              AS "closingPrayer"
+    FROM meetings
+    ORDER BY ABS(date - (${targetDate})::date) ASC, date DESC
+    LIMIT 1
+  `;
+  return (rows.rows[0] as unknown as SacramentMeeting) ?? null;
+}
+
 export async function addMeeting(
   data: Omit<SacramentMeeting, 'id'>
 ): Promise<SacramentMeeting> {

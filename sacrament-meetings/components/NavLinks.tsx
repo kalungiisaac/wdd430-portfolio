@@ -10,7 +10,11 @@ const links = [
   { href: '/speakers', label: 'Speakers' },
 ];
 
-export default function NavLinks() {
+export default function NavLinks({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -41,6 +45,17 @@ export default function NavLinks() {
             </li>
           );
         })}
+        {!isAuthenticated && (
+          <li>
+            <Link
+              href="/login"
+              aria-current={pathname === '/login' ? 'page' : undefined}
+              className="rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-primary transition-colors hover:bg-white/90"
+            >
+              Sign In
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

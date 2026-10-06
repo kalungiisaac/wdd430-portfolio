@@ -22,12 +22,32 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  ),
   title: {
     default: 'Sacrament Meetings | Riverside Ward',
     template: '%s | Riverside Ward',
   },
   description:
     'Sacrament meeting planner for the Riverside Ward of The Church of Jesus Christ of Latter-day Saints.',
+  applicationName: 'Sacrament Meeting Planner',
+  keywords: [
+    'sacrament meeting',
+    'ward planner',
+    'LDS',
+    'The Church of Jesus Christ of Latter-day Saints',
+    'meeting program',
+  ],
+  openGraph: {
+    type: 'website',
+    siteName: 'Sacrament Meeting Planner',
+    locale: 'en_US',
+    url: '/',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 };
 
 export default function RootLayout({

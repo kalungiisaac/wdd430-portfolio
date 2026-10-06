@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { auth } from '@/auth';
 import MeetingCard from '@/components/MeetingCard';
 import { MeetingSearch } from '@/components/MeetingSearch';
 import { Pagination } from '@/components/Pagination';
@@ -9,6 +10,12 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'All Meetings',
+  description:
+    'Browse every sacrament meeting program for the Riverside Ward, with search and pagination across speakers, leaders, and meeting types.',
+  // No `openGraph` block here on purpose: redeclaring it in a child segment
+  // replaces the root layout's `openGraph`, which drops the inherited
+  // og:image from app/opengraph-image.tsx. Next derives og:title/og:description
+  // from `title`/`description` automatically.
 };
 
 export default async function MeetingsPage(props: {
@@ -18,10 +25,13 @@ export default async function MeetingsPage(props: {
   const query = searchParams?.query ?? '';
   const currentPage = Math.max(1, Number(searchParams?.page) || 1);
 
-  const [meetings, totalPages] = await Promise.all([
+  const [meetings, totalPages, session] = await Promise.all([
     getMeetings(query, currentPage),
     getMeetingsTotalPages(query),
+    auth(),
   ]);
+
+  const canManage = !!session?.user;
 
   return (
     <section>
@@ -34,7 +44,11 @@ export default async function MeetingsPage(props: {
       ) : (
         <ul className="grid gap-5 sm:grid-cols-2">
           {meetings.map((meeting) => (
-            <MeetingCard key={meeting.id} meeting={meeting} />
+            <MeetingCard
+              key={meeting.id}
+              meeting={meeting}
+              canManage={canManage}
+            />
           ))}
         </ul>
       )}

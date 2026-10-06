@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { AuthError } from 'next-auth';
+import { auth, signIn } from '@/auth';
 import {
   addMeeting,
   deleteMeeting as deleteMeetingRecord,
@@ -14,6 +16,48 @@ import type {
   SacramentMeeting,
   SpeakerItem,
 } from './types';
+
+/**
+ * Secure authorization check for every mutation.
+ *
+ * proxy.ts only performs an optimistic cookie check, so this runs server-side
+ * before any database write. Server Actions are reachable by direct HTTP
+ * request, so hiding the buttons in the UI is not enough.
+ *
+ * We redirect rather than throw: an expired session on a mutation POST should
+ * land the user on the login page, not surface an error-boundary 500.
+ */
+async function requireOwnerSession(): Promise<void> {
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/login');
+  }
+}
+
+/**
+ * Sign-in action used by the login form via useActionState.
+ * Returns an error message on failure; resolves (then redirects) on success.
+ */
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData
+): Promise<string | undefined> {
+  try {
+    await signIn('credentials', formData);
+    return undefined;
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid email or password.';
+        default:
+          return 'Something went wrong. Please try again.';
+      }
+    }
+    // Re-throw so Next.js handles the successful-login redirect correctly.
+    throw error;
+  }
+}
 
 const MEETING_TYPES = [
   'testimony',
@@ -188,6 +232,8 @@ export async function createMeeting(
   _prevState: MeetingFormState,
   formData: FormData
 ): Promise<MeetingFormState> {
+  await requireOwnerSession();
+
   const parsed = MeetingFormSchema.safeParse(buildFormInput(formData));
 
   if (!parsed.success) {
@@ -216,6 +262,8 @@ export async function updateMeeting(
   _prevState: MeetingFormState,
   formData: FormData
 ): Promise<MeetingFormState> {
+  await requireOwnerSession();
+
   const parsed = MeetingFormSchema.safeParse(buildFormInput(formData));
 
   if (!parsed.success) {
@@ -246,6 +294,8 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
+  await requireOwnerSession();
+
   const id = Number(formData.get('id'));
 
   if (!Number.isInteger(id) || id <= 0) {

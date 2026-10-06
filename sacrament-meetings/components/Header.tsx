@@ -1,21 +1,11 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
+import { auth } from '@/auth';
+import SignOutButton from './SignOutButton';
+import CurrentDate from './CurrentDate';
 import NavLinks from './NavLinks';
 
-export default function Header() {
-  const dateRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    if (dateRef.current) {
-      dateRef.current.textContent = new Date().toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    }
-  }, []);
+export default async function Header() {
+  const session = await auth();
+  const isAuthenticated = !!session?.user;
 
   return (
     <header className="print:hidden bg-primary text-white shadow-sm">
@@ -24,9 +14,12 @@ export default function Header() {
           <p className="font-serif text-lg font-semibold leading-tight sm:text-xl">
             Riverside Ward
           </p>
-          <p ref={dateRef} className="text-sm text-white/80" suppressHydrationWarning />
+          <CurrentDate />
         </div>
-        <NavLinks />
+        <div className="flex flex-wrap items-center gap-2">
+          <NavLinks isAuthenticated={isAuthenticated} />
+          {isAuthenticated && <SignOutButton variant="header" />}
+        </div>
       </div>
     </header>
   );

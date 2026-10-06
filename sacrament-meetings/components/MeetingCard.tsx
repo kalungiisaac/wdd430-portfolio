@@ -3,7 +3,13 @@ import type { SacramentMeeting } from '@/lib/types';
 import { formatMeetingDate, meetingTypeLabel } from '@/lib/format';
 import DeleteMeetingButton from './DeleteMeetingButton';
 
-export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) {
+export default function MeetingCard({
+  meeting,
+  canManage = false,
+}: {
+  meeting: SacramentMeeting;
+  canManage?: boolean;
+}) {
   return (
     <li className="flex flex-col rounded-xl border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-primary/5">
       <Link href={`/meetings/${meeting.id}`} className="block p-5">
@@ -31,15 +37,19 @@ export default function MeetingCard({ meeting }: { meeting: SacramentMeeting }) 
           Opening hymn #{meeting.openingHymn.number}
         </p>
       </Link>
-      <div className="mt-auto flex items-center justify-end gap-2 border-t border-border px-5 py-3">
-        <Link
-          href={`/meetings/${meeting.id}/edit`}
-          className="rounded-full px-3 py-1 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/40"
-        >
-          Edit
-        </Link>
-        <DeleteMeetingButton meetingId={meeting.id} />
-      </div>
+      {/* Mutation controls only render for the signed-in owner. The server
+          actions re-check the session regardless, so this is UX only. */}
+      {canManage && (
+        <div className="mt-auto flex items-center justify-end gap-2 border-t border-border px-5 py-3">
+          <Link
+            href={`/meetings/${meeting.id}/edit`}
+            className="rounded-full px-3 py-1 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/40"
+          >
+            Edit
+          </Link>
+          <DeleteMeetingButton meetingId={meeting.id} />
+        </div>
+      )}
     </li>
   );
 }
