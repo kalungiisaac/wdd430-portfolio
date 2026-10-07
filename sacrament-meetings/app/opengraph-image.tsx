@@ -46,6 +46,8 @@ export default async function Image() {
             marginBottom: '28px',
           }}
         >
+          {/* A drawn steeple rather than the ⛪ emoji: Satori has no emoji font
+              loaded here, so an emoji would render as tofu. */}
           <div
             style={{
               width: '64px',
@@ -53,12 +55,35 @@ export default async function Image() {
               borderRadius: '16px',
               background: 'rgba(255,255,255,0.15)',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-end',
               justifyContent: 'center',
-              fontSize: '36px',
+              paddingBottom: '12px',
             }}
           >
-            ⛪
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeft: '11px solid transparent',
+                  borderRight: '11px solid transparent',
+                  borderBottom: '16px solid #ffffff',
+                }}
+              />
+              <div
+                style={{
+                  width: '26px',
+                  height: '20px',
+                  background: '#ffffff',
+                }}
+              />
+            </div>
           </div>
           <div
             style={{

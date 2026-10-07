@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { sql } from '@vercel/postgres';
 import type { SacramentMeeting } from './types';
 
@@ -99,10 +100,15 @@ export async function getMeetingsTotalPages(
   return Math.ceil(Number(rows.rows[0].count) / ITEMS_PER_PAGE);
 }
 
-export async function getMeetingById(
-  id: number
-): Promise<SacramentMeeting | null> {
-  const rows = await sql`
+/**
+ * Deduplicated per request: `generateMetadata` and the page component in
+ * app/(public)/meetings/[id] both need the meeting, and `cache()` makes the
+ * second call reuse the first instead of issuing a second SQL round-trip.
+ * (Both callers are server components in the same request.)
+ */
+export const getMeetingById = cache(
+  async (id: number): Promise<SacramentMeeting | null> => {
+    const rows = await sql`
     SELECT
       id,
       to_char(date, 'YYYY-MM-DD') AS "date",
@@ -118,8 +124,9 @@ export async function getMeetingById(
       closing_prayer              AS "closingPrayer"
     FROM meetings WHERE id = ${id}
   `;
-  return (rows.rows[0] as unknown as SacramentMeeting) ?? null;
-}
+    return (rows.rows[0] as unknown as SacramentMeeting) ?? null;
+  }
+);
 
 /**
  * Returns the meeting for the given date if one exists, otherwise the meeting
