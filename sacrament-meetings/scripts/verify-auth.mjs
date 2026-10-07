@@ -165,7 +165,11 @@ check('wrong password does not grant access', stillBlocked.status === 307, Strin
 console.log('\n-- Successful login --');
 const goodRes = await login('owner@example.com', 'change-me-123');
 check('login redirects (303)', goodRes.status === 303, `status=${goodRes.status}`);
-const hasSession = [...jar.keys()].includes('authjs.session-token');
+// Auth.js prefixes cookies on HTTPS: `__Secure-authjs.session-token` in
+// production, bare `authjs.session-token` on localhost. Match either.
+const hasSession = [...jar.keys()].some((k) =>
+  /(^|__Secure-|__Host-)authjs\.session-token$/.test(k)
+);
 check('session cookie set', hasSession, [...jar.keys()].join(', ') || 'none');
 // Follow the post-login redirect the way a browser would.
 const landRes = await get(goodRes.headers.get('location') ?? '/');
